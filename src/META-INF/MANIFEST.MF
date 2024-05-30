@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-MIDlet-1: Tetris,  ,  Midlet
-MIDlet-Jar-URL: 俄罗斯方块.jar
-MIDlet-Name: 俄罗斯方块
-MIDlet-Vendor: PIKAC
-MIDlet-Version: 1.0
