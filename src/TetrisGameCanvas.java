@@ -81,9 +81,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     public Tetramino figure_next = new Tetramino();
     public Tetramino figure_tmp = new Tetramino();
 
-    /**
-     * Creates a new instance of TetrisGameCanvas
-     */
     public TetrisGameCanvas() {
         super(true);
 
@@ -95,29 +92,24 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         KD = getKeyCode(DOWN);
         KF = getKeyCode(FIRE);
 
-        if (KL == KEY_NUM4) // �����...
-        {
+        if (KL == KEY_NUM4) {
             KL = -3;
             KR = -4;
             KU = -1;
             KD = -2;
             KF = 0;
-
             addCommand(cmdSet);
         }
 
         addCommand(cmdExit);
         addCommand(cmdPause);
         setCommandListener(this);
-
-        //setFullScreenMode(true);
         g = getGraphics();
         width = getWidth();
         height = getHeight();
 
         board = new DrawBoard(this);
         board.stack = stack;
-        //
         clear();
         board.Clear();
         board.DrawHiScore();
@@ -126,8 +118,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
 
 
     public void start() {
-        //figure_next.Set(1, 1, 1+rnd(4));
-
         inWork = true;
         t = new Thread(this);
         t.start();
@@ -160,16 +150,13 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         return Math.abs(_rnd.nextInt()) % n;
     }
 
-    //-----------------------//
-    // T H R E A D   L O O P //
-    //-----------------------//
-
     public void run() {
         time = System.currentTimeMillis();
         _rnd.setSeed(System.currentTimeMillis());
         figure_next.Set(rndp[rnd(21)], rnd(4), rndc[(FALLS / 20) % 21][rnd(10)]);
 
-        Refresh(true);
+        Refresh(true,false);
+        if (mode == MODE_PAUSE) board.DrawPause();
 
         while (inWork) {
             if (mode == MODE_PAUSE) {
@@ -192,7 +179,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
                 board.DrawPreview(figure_next);
                 mode = MODE_FALL;
                 time = System.currentTimeMillis();
-                Refresh(true);
+                Refresh(true,false);
                 continue;
             }
             if (mode == MODE_FALL) {
@@ -325,9 +312,12 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         flushGraphics();
     }
 
-    public void Refresh(boolean showTetramino) {
+    public void Refresh(boolean showTetramino, boolean isPause) {
         board.Clear();
         board.DrawBg();
+        board.DrawBtnBack();
+        if (isPause) board.DrawBtnContinue();
+        else board.DrawBtnPause();
         board.DrawScore();
         board.DrawStack();
         board.DrawPreview(figure_next);
@@ -356,7 +346,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             ResetScores();
             removeCommand(cmdStart);
             addCommand(cmdPause);
-            Refresh(true);
+            Refresh(true,false);
         }
         if (c == cmdPause) {
             time = System.currentTimeMillis();
@@ -365,6 +355,8 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             addCommand(cmdResume);
             mode2 = mode;
             mode = MODE_PAUSE;
+            Refresh(true,true);
+            board.DrawPause();
             flushGraphics();
         }
         if (c == cmdResume) {
@@ -372,14 +364,10 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             removeCommand(cmdResume);
             addCommand(cmdPause);
             mode = mode2;
-            Refresh(true);
+            Refresh(true,false);
         }
     }
 
-
-    //------------------------------------------------------------
-    //----------------------- K E Y S ----------------------------
-    //------------------------------------------------------------
     private int keyTrigger = 0;
 
     private void readkeys() {
@@ -416,8 +404,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         }
     }
 
-    //------------------------------------------------------------
-    //------------------------------------------------------------
     private void OnLeft() {
         SCORE -= 5;
         board.DrawTetramino(figure, false);
@@ -444,7 +430,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         figure.RotateLeft();
         do {
             if (stack.Intersect(figure)) {
-                // ������� ��������� ����� ��� ������
                 figure.Left();
                 if (stack.Intersect(figure))
                     figure.RestoreCoords();

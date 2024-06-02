@@ -17,6 +17,10 @@ public class DrawBoard {
 
     private Image bg;
     private Image gameBg;
+    private Image pause;
+    private Image btnBack;
+    private Image btnPause;
+    private Image btnContinue;
 
     public Stack stack;
 
@@ -28,7 +32,8 @@ public class DrawBoard {
     public int ofsx_stack;
     public int ofsy_stack;
     public int ofsx_preview;
-    public int ofsy_preview;;
+    public int ofsy_preview;
+    ;
 
     public int bg_x;
     public int bg_y;
@@ -78,6 +83,30 @@ public class DrawBoard {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            pause = Image.createImage("/bg_pause.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            btnBack = Image.createImage("/btn_back.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            btnPause = Image.createImage("/btn_pause.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            btnContinue = Image.createImage("/btn_continue.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.Clear();
     }
 
@@ -111,11 +140,6 @@ public class DrawBoard {
         DrawBg();
         DrawStack();
         DrawScore();
-    }
-
-    public void DrawBg() {
-        g.drawImage(bg, bg_x, bg_y, Graphics.TOP | Graphics.LEFT);
-        g.drawImage(gameBg, gameBg_x, gameBg_y, Graphics.TOP | Graphics.LEFT);
     }
 
     public void DrawTetramino(Tetramino t, boolean vis) {
@@ -169,6 +193,11 @@ public class DrawBoard {
         g.drawImage(images[t.colorIndex], cellsize * t.x[3] + ox, cellsize * t.y[3] + oy, 0);
     }
 
+    public void DrawBg() {
+        g.drawImage(bg, bg_x, bg_y, Graphics.TOP | Graphics.LEFT);
+        g.drawImage(gameBg, gameBg_x, gameBg_y, Graphics.TOP | Graphics.LEFT);
+    }
+
     public void DrawScore() {
 
     }
@@ -183,6 +212,30 @@ public class DrawBoard {
 
     public void DrawGameOver() {
 
+    }
+
+    public void DrawPause() {
+        int x = width / 2 - pause.getWidth() / 2;
+        int y = height / 2 - pause.getHeight() / 2;
+        g.drawImage(pause, x, y, Graphics.TOP | Graphics.LEFT);
+    }
+
+    public void DrawBtnBack() {
+        int x = 50;
+        int y = height - 50;
+        g.drawImage(btnBack, x, y, Graphics.TOP | Graphics.LEFT);
+    }
+
+    public void DrawBtnPause() {
+        int x = width - 130;
+        int y = height - 50;
+        g.drawImage(btnPause, x, y, Graphics.TOP | Graphics.LEFT);
+    }
+
+    public void DrawBtnContinue() {
+        int x = width - 130;
+        int y = height - 50;
+        g.drawImage(btnContinue, x, y, Graphics.TOP | Graphics.LEFT);
     }
 }
 
