@@ -13,6 +13,7 @@ public class DrawBoard {
 
     TetrisGameCanvas canvas;
 
+    private DrawNumberHandler drawNumberHandler;
     private Image[] images;
 
     private Image bg;
@@ -24,7 +25,6 @@ public class DrawBoard {
 
     public Stack stack;
 
-    // mark
     public int w_stack;
     public int h_stack;
     public int w_preview;
@@ -33,13 +33,19 @@ public class DrawBoard {
     public int ofsy_stack;
     public int ofsx_preview;
     public int ofsy_preview;
-    ;
 
     public int bg_x;
     public int bg_y;
 
     public int gameBg_x;
     public int gameBg_y;
+
+    public int level_x;
+    public int level_y;
+    public int lines_x;
+    public int lines_y;
+    public int score_x;
+    public int score_y;
 
     public DrawBoard(TetrisGameCanvas canvas) {
         this.canvas = canvas;
@@ -107,6 +113,8 @@ public class DrawBoard {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.drawNumberHandler = new DrawNumberHandler("/number.png", 32, 48);
         this.Clear();
     }
 
@@ -134,6 +142,16 @@ public class DrawBoard {
         bg_y = height / 2 - bg.getHeight() / 2;
         gameBg_x = width / 2 - gameBg.getWidth() / 2;
         gameBg_y = height / 2 - gameBg.getHeight() / 2;
+
+        int center_x = width / 2;
+        int center_y = height / 2;
+        int offsetx = 185;
+        score_x = center_x + offsetx;
+        score_y = center_y - 55;
+        lines_x = center_x + offsetx;
+        lines_y = center_y + 110;
+        level_x = center_x + offsetx;
+        level_y = center_y + 280;
     }
 
     public void DrawAll() {
@@ -153,7 +171,7 @@ public class DrawBoard {
             if (t.y[3] > -1)
                 g.drawImage(images[t.colorIndex], cellsize * t.x[3] + ofsx_stack, cellsize * t.y[3] + ofsy_stack, 0);
         } else {
-            g.setColor(0x00000000);
+            g.setColor(0x393939);
             for (int i = 0; i < 4; ++i) {
                 int min_x = cellsize * t.x[i] + ofsx_stack;
                 int width = images[t.colorIndex].getWidth();
@@ -199,11 +217,13 @@ public class DrawBoard {
     }
 
     public void DrawScore() {
-
+        drawNumberHandler.ShowNumber(g, canvas.LEVEL, level_x, level_y);
+        drawNumberHandler.ShowNumber(g, canvas.SCORE, score_x, score_y);
+        drawNumberHandler.ShowNumber(g, canvas.LINES, lines_x, lines_y);
     }
 
     public void DrawScoreValueOnly() {
-
+        drawNumberHandler.ShowNumber(g, canvas.SCORE, score_x, score_y);
     }
 
     public void DrawHiScore() {

@@ -155,7 +155,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         _rnd.setSeed(System.currentTimeMillis());
         figure_next.Set(rndp[rnd(21)], rnd(4), rndc[(FALLS / 20) % 21][rnd(10)]);
 
-        Refresh(true,false);
+        Refresh(true, false);
         if (mode == MODE_PAUSE) board.DrawPause();
 
         while (inWork) {
@@ -179,7 +179,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
                 board.DrawPreview(figure_next);
                 mode = MODE_FALL;
                 time = System.currentTimeMillis();
-                Refresh(true,false);
+                Refresh(true, false);
                 continue;
             }
             if (mode == MODE_FALL) {
@@ -346,7 +346,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             ResetScores();
             removeCommand(cmdStart);
             addCommand(cmdPause);
-            Refresh(true,false);
+            Refresh(true, false);
         }
         if (c == cmdPause) {
             time = System.currentTimeMillis();
@@ -355,7 +355,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             addCommand(cmdResume);
             mode2 = mode;
             mode = MODE_PAUSE;
-            Refresh(true,true);
+            Refresh(true, true);
             board.DrawPause();
             flushGraphics();
         }
@@ -364,7 +364,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             removeCommand(cmdResume);
             addCommand(cmdPause);
             mode = mode2;
-            Refresh(true,false);
+            Refresh(true, false);
         }
     }
 
@@ -406,6 +406,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
 
     private void OnLeft() {
         SCORE -= 5;
+        if (SCORE < 0) SCORE = 0;
         board.DrawTetramino(figure, false);
         figure.Left();
         if (stack.Intersect(figure)) figure.RestoreCoords();
@@ -416,6 +417,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
 
     private void OnRight() {
         SCORE -= 5;
+        if (SCORE < 0) SCORE = 0;
         board.DrawTetramino(figure, false);
         figure.Right();
         if (stack.Intersect(figure)) figure.RestoreCoords();
@@ -426,6 +428,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
 
     private void OnUp() {
         SCORE -= 5;
+        if (SCORE < 0) SCORE = 0;
         board.DrawTetramino(figure, false);
         figure.RotateLeft();
         do {
@@ -467,6 +470,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             board.DrawPreview(figure_next);
             board.DrawTetramino(figure, true);
             SCORE -= 100;
+            if (SCORE < 0) SCORE = 0;
             board.DrawScoreValueOnly();
             flushGraphics();
         } else {
