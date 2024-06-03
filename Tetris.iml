@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="KEmulator" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="KEmulator" level="project" />
   </component>
   <component name="com.intellij.j2meplugin.module.J2MEModuleProperties">
     <mobileApplicationType name="MIDP" />
@@ -16,7 +16,7 @@
     <setting name="MIDlet-1" module.settings.user.defined.value="Tetris, , Midlet" />
     <setting name="MIDlet-Jar-URL" module.settings.user.defined.value="Tetris.jar" />
     <setting name="MIDlet-Name" module.settings.user.defined.value="Tetris" />
-    <setting name="MIDlet-Vendor" module.settings.user.defined.value="My Vendor" />
+    <setting name="MIDlet-Vendor" module.settings.user.defined.value="PIKAC" />
     <setting name="MIDlet-Version" module.settings.user.defined.value="1.0" />
     <jarUrl jarUrlName="$MODULE_DIR$/Tetris.jar" />
     <descriptionPath path="$MODULE_DIR$/Tetris.jad" useUserDescriptor="true" />
