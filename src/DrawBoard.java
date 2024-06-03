@@ -67,11 +67,11 @@ public class DrawBoard {
             sz = 32;
         }
         Image temp = null;
-        images = new Image[7];
+        images = new Image[8];
         String s = "";
         try {
             temp = Image.createImage("/blocks.png");
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
                 images[i] = Image.createImage(temp, i * 32, 0, sz, sz, Sprite.TRANS_NONE);
         } catch (java.io.IOException e) {
             s = e.getMessage();
@@ -171,13 +171,10 @@ public class DrawBoard {
             if (t.y[3] > -1)
                 g.drawImage(images[t.colorIndex], cellsize * t.x[3] + ofsx_stack, cellsize * t.y[3] + ofsy_stack, 0);
         } else {
-            g.setColor(0x393939);
             for (int i = 0; i < 4; ++i) {
                 int min_x = cellsize * t.x[i] + ofsx_stack;
-                int width = images[t.colorIndex].getWidth();
                 int min_y = cellsize * t.y[i] + ofsy_stack;
-                int height = images[t.colorIndex].getHeight();
-                if (t.y[i] > -1) g.fillRect(min_x, min_y, width, height);
+                if (t.y[i] > -1) g.drawImage(images[7], min_x, min_y, 0);
             }
         }
     }
@@ -203,7 +200,7 @@ public class DrawBoard {
         int wx = max_x - min_x;
         int wy = max_y - min_y;
 
-        int ox = ofsx_preview + cellsize * ((4 - wx) / 2 - min_x);
+        int ox = ofsx_preview + cellsize * ((4 - wx) / 2 - min_x) + 10;
         int oy = ofsy_preview + cellsize * ((4 - wy) / 2 - min_y);
         g.drawImage(images[t.colorIndex], cellsize * t.x[0] + ox, cellsize * t.y[0] + oy, 0);
         g.drawImage(images[t.colorIndex], cellsize * t.x[1] + ox, cellsize * t.y[1] + oy, 0);
@@ -224,14 +221,6 @@ public class DrawBoard {
 
     public void DrawScoreValueOnly() {
         drawNumberHandler.ShowNumber(g, canvas.SCORE, score_x, score_y);
-    }
-
-    public void DrawHiScore() {
-
-    }
-
-    public void DrawGameOver() {
-
     }
 
     public void DrawPause() {

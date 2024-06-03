@@ -8,22 +8,15 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     private volatile boolean inWork;
     public int width;
     public int height;
-    public Graphics g = null;
+    public Graphics g;
 
     private long time = 0;
-
-    private int KL;
-    private int KR;
-    private int KU;
-    private int KD;
-    private int KF;
 
     public int LEVEL = 1;
     public int SCORE = 0;
     public int HISCORE = 0;
     public int LINES = 0;
     public int FALLS = 0;
-    public long StartTime = -1;
     public long level_delay = 900;
 
     public static final int
@@ -67,12 +60,9 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     public static int mode2 = MODE_GAMEOVER;
     Thread t;
 
-    public Command cmdExit = new Command("退出", Command.EXIT, 1);
+    public Command cmdBack = new Command("返回", Command.EXIT, 1);
     public Command cmdPause = new Command("暂停", Command.OK, 2);
     public Command cmdResume = new Command("恢复", Command.OK, 2);
-    public Command cmdStart = new Command("开始", Command.OK, 2);
-    private Command cmdSet = new Command(" ", Command.OK, 0);
-
     public DrawBoard board;
 
     private Random _rnd = new Random();
@@ -84,51 +74,37 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     public TetrisGameCanvas() {
         super(true);
 
-        StartTime = System.currentTimeMillis();
-
-        KL = getKeyCode(LEFT);
-        KR = getKeyCode(RIGHT);
-        KU = getKeyCode(UP);
-        KD = getKeyCode(DOWN);
-        KF = getKeyCode(FIRE);
-
-        if (KL == KEY_NUM4) {
-            KL = -3;
-            KR = -4;
-            KU = -1;
-            KD = -2;
-            KF = 0;
-            addCommand(cmdSet);
-        }
-
-        addCommand(cmdExit);
+        addCommand(cmdBack);
         addCommand(cmdPause);
         setCommandListener(this);
         g = getGraphics();
         width = getWidth();
         height = getHeight();
-
-        board = new DrawBoard(this);
-        board.stack = stack;
-        clear();
-        board.Clear();
-        board.DrawHiScore();
-
     }
 
 
     public void start() {
-        inWork = true;
+        Init();
         t = new Thread(this);
         t.start();
     }
 
+    public void Init() {
+        inWork = true;
+        board = new DrawBoard(this);
+        figure = new Tetramino();
+        figure_next = new Tetramino();
+        figure_tmp = new Tetramino();
+        stack = new Stack();
+        board.stack = stack;
+        mode = MODE_NEWFIGURE;
+        clear();
+        board.Clear();
+        ResetScores();
+    }
+
     public void stop() {
         inWork = false;
-        try {
-            t.join();
-        } catch (InterruptedException ie) {
-        }
     }
 
     public void clear() {
@@ -291,17 +267,12 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             }
             if (mode == MODE_GAMEOVER) {
                 time = System.currentTimeMillis();
-                board.DrawGameOver();
-                removeCommand(cmdPause);
-                addCommand(cmdStart);
                 mode = MODE_PAUSE;
                 if (SCORE > HISCORE) {
                     HISCORE = SCORE;
                 }
-
-                flushGraphics();
-                setFullScreenMode(true);
-                setFullScreenMode(false);
+                midlet.OpenGameOver();
+                midlet.CloseGame();
             }
         }
     }
@@ -338,19 +309,12 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     //------------------------------------------------//    
 
     public void commandAction(Command c, Displayable d) {
-        if (c == cmdExit) {
-            midlet.exitMIDlet();
-        } else if (c == cmdStart) {
-            stack.Clear();
-            mode = MODE_NEWFIGURE;
-            ResetScores();
-            removeCommand(cmdStart);
-            addCommand(cmdPause);
-            Refresh(true, false);
+        if (c == cmdBack) {
+            midlet.OpenMenu();
+            midlet.CloseGame();
         }
         if (c == cmdPause) {
             time = System.currentTimeMillis();
-
             removeCommand(cmdPause);
             addCommand(cmdResume);
             mode2 = mode;
