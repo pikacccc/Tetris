@@ -123,7 +123,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         mode = MODE_NEWFIGURE;
         clear();
         board.Clear();
-        board.DrawHiScore();
         ResetScores();
     }
 
@@ -291,15 +290,12 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
             }
             if (mode == MODE_GAMEOVER) {
                 time = System.currentTimeMillis();
-                board.DrawGameOver();
                 mode = MODE_PAUSE;
                 if (SCORE > HISCORE) {
                     HISCORE = SCORE;
                 }
-
-                flushGraphics();
-                setFullScreenMode(true);
-                setFullScreenMode(false);
+                midlet.OpenGameOver();
+                midlet.CloseGame();
             }
         }
     }

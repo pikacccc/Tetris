@@ -2,9 +2,10 @@ import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
 public class Midlet extends MIDlet {
-    private Display display;
-    private TetrisGameCanvas canvas;
-    private Menu gameMenu;
+    public Display display;
+    public TetrisGameCanvas canvas;
+    public Menu gameMenu;
+    public GameOver gameOver;
     public RecordStores rs;
 
 
@@ -16,6 +17,8 @@ public class Midlet extends MIDlet {
         canvas.midlet = this;
         gameMenu = new Menu();
         gameMenu.midlet = this;
+        gameOver = new GameOver();
+        gameOver.midlet = this;
     }
 
 
@@ -41,11 +44,19 @@ public class Midlet extends MIDlet {
     public void StartGame() {
         canvas.start();
         display.setCurrent(canvas);
-        CloseMenu();
     }
 
     public void CloseGame() {
         canvas.stop();
+    }
+
+    public void OpenGameOver() {
+        gameOver.start();
+        display.setCurrent(gameOver);
+    }
+
+    public void CloseGameOver() {
+        gameOver.stop();
     }
 
     public void destroyApp(boolean unconditional) {
