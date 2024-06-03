@@ -203,7 +203,7 @@ public class DrawBoard {
         int wx = max_x - min_x;
         int wy = max_y - min_y;
 
-        int ox = ofsx_preview + cellsize * ((4 - wx) / 2 - min_x);
+        int ox = ofsx_preview + cellsize * ((4 - wx) / 2 - min_x)+10;
         int oy = ofsy_preview + cellsize * ((4 - wy) / 2 - min_y);
         g.drawImage(images[t.colorIndex], cellsize * t.x[0] + ox, cellsize * t.y[0] + oy, 0);
         g.drawImage(images[t.colorIndex], cellsize * t.x[1] + ox, cellsize * t.y[1] + oy, 0);
