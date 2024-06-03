@@ -12,12 +12,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
 
     private long time = 0;
 
-    private int KL;
-    private int KR;
-    private int KU;
-    private int KD;
-    private int KF;
-
     public int LEVEL = 1;
     public int SCORE = 0;
     public int HISCORE = 0;
@@ -69,8 +63,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     public Command cmdBack = new Command("返回", Command.EXIT, 1);
     public Command cmdPause = new Command("暂停", Command.OK, 2);
     public Command cmdResume = new Command("恢复", Command.OK, 2);
-    private Command cmdSet = new Command(" ", Command.OK, 0);
-
     public DrawBoard board;
 
     private Random _rnd = new Random();
@@ -81,21 +73,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
 
     public TetrisGameCanvas() {
         super(true);
-
-        KL = getKeyCode(LEFT);
-        KR = getKeyCode(RIGHT);
-        KU = getKeyCode(UP);
-        KD = getKeyCode(DOWN);
-        KF = getKeyCode(FIRE);
-
-        if (KL == KEY_NUM4) {
-            KL = -3;
-            KR = -4;
-            KU = -1;
-            KD = -2;
-            KF = 0;
-            addCommand(cmdSet);
-        }
 
         addCommand(cmdBack);
         addCommand(cmdPause);

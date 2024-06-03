@@ -65,14 +65,38 @@ public class Menu extends GameCanvas implements CommandListener, Runnable {
         t.start();
     }
 
+    private int keyTrigger = 0;
+    private void tick() {
+        int keys = getKeyStates();
+
+        int inv = 0xffffffff - keyTrigger;
+        int key = inv & keys;
+        keyTrigger &= keys;
+
+        if ((key & DOWN_PRESSED) != 0) {
+            selectedOption = (selectedOption + 1) % 2;
+            keyTrigger |= DOWN_PRESSED;
+        }
+        if ((key & UP_PRESSED) != 0) {
+            selectedOption = (selectedOption - 1 + 2) % 2;
+            keyTrigger |= UP_PRESSED;
+        }
+        if ((key & FIRE_PRESSED) != 0) {
+            executeSelectedOption();
+            keyTrigger |= FIRE_PRESSED;
+        }
+    }
+
     public void run() {
         while (isRunning) {
+            tick();
+            if(!isRunning) break;
             draw();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(2);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -103,14 +127,14 @@ public class Menu extends GameCanvas implements CommandListener, Runnable {
     }
 
     protected void keyPressed(int keyCode) {
-        int gameAction = getGameAction(keyCode);
-        if (gameAction == UP || gameAction == LEFT) {
-            selectedOption = (selectedOption - 1 + 2) % 2;
-        } else if (gameAction == DOWN || gameAction == RIGHT) {
-            selectedOption = (selectedOption + 1) % 2;
-        } else if (gameAction == FIRE) {
-            executeSelectedOption();
-        }
+//        int gameAction = getGameAction(keyCode);
+//        if (gameAction == UP || gameAction == LEFT || gameAction == KEY_NUM2 || gameAction == KEY_NUM4) {
+//            selectedOption = (selectedOption - 1 + 2) % 2;
+//        } else if (gameAction == DOWN || gameAction == RIGHT || gameAction == KEY_NUM8 || gameAction == KEY_NUM6) {
+//            selectedOption = (selectedOption + 1) % 2;
+//        } else if (gameAction == FIRE || gameAction == KEY_NUM5) {
+//            executeSelectedOption();
+//        }
     }
 
     private void executeSelectedOption() {
@@ -123,8 +147,8 @@ public class Menu extends GameCanvas implements CommandListener, Runnable {
     }
 
     public void commandAction(Command command, Displayable displayable) {
-        if (command == selectCommand) {
-            executeSelectedOption();
-        }
+//        if (command == selectCommand) {
+//            executeSelectedOption();
+//        }
     }
 }
