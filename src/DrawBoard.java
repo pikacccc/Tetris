@@ -132,7 +132,7 @@ public class DrawBoard {
         w_r = w_preview;
 
         ofsx_stack = (width - w_stack) / 2 - 72;
-        ofsy_stack = (height - h_stack) / 2 + 15;
+        ofsy_stack = (height - h_stack) / 2 + 16;
 
         ofsx_preview = (width - w_stack - w_preview) / 2 + w_stack;
         ofsy_preview = ofsy_stack + cellsize * 1;
