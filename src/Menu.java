@@ -28,7 +28,7 @@ public class Menu extends GameCanvas implements CommandListener, Runnable {
     public Menu() {
         super(true);
         g = getGraphics();
-        selectCommand = new Command("Select", Command.OK, 0);
+        selectCommand = new Command("", Command.OK, 0);
         addCommand(selectCommand);
         setCommandListener(this);
         LoadImages();

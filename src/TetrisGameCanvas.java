@@ -60,9 +60,9 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     public static int mode2 = MODE_GAMEOVER;
     Thread t;
 
-    public Command cmdBack = new Command("返回", Command.EXIT, 1);
-    public Command cmdPause = new Command("暂停", Command.OK, 2);
-    public Command cmdResume = new Command("恢复", Command.OK, 2);
+    public Command cmdBack = new Command("", Command.EXIT, 1);
+    public Command cmdPause = new Command("", Command.OK, 2);
+    public Command cmdResume = new Command("", Command.OK, 2);
     public DrawBoard board;
 
     private Random _rnd = new Random();
