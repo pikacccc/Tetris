@@ -27,6 +27,7 @@ public class Menu extends GameCanvas implements CommandListener, Runnable {
 
     public Menu() {
         super(true);
+        setFullScreenMode(true);
         g = getGraphics();
         selectCommand = new Command("", Command.OK, 0);
         addCommand(selectCommand);
@@ -66,6 +67,7 @@ public class Menu extends GameCanvas implements CommandListener, Runnable {
     }
 
     private int keyTrigger = 0;
+
     private void tick() {
         int keys = getKeyStates();
 
@@ -90,7 +92,7 @@ public class Menu extends GameCanvas implements CommandListener, Runnable {
     public void run() {
         while (isRunning) {
             tick();
-            if(!isRunning) break;
+            if (!isRunning) break;
             draw();
 //            try {
 //                Thread.sleep(2);

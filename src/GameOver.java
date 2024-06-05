@@ -34,6 +34,7 @@ public class GameOver extends GameCanvas implements CommandListener, Runnable {
 
     public GameOver() {
         super(true);
+        setFullScreenMode(true);
         g = getGraphics();
         selectCommand = new Command("", Command.OK, 0);
         addCommand(selectCommand);

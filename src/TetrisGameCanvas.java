@@ -73,7 +73,7 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
 
     public TetrisGameCanvas() {
         super(true);
-
+        setFullScreenMode(true);
         addCommand(cmdBack);
         addCommand(cmdPause);
         setCommandListener(this);
