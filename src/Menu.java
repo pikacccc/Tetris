@@ -26,7 +26,7 @@ public class Menu extends GameCanvas implements CommandListener, Runnable {
     private int exit_y;
 
     public Menu() {
-        super(true);
+        super(false);
         setFullScreenMode(true);
         g = getGraphics();
         selectCommand = new Command("", Command.OK, 0);
