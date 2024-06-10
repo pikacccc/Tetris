@@ -11,4 +11,6 @@ public class Util {
         }
         return tempImg;
     }
+
+    public static Image bg = Util.LoadImg("/background.png");
 }

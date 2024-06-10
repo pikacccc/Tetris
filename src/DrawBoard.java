@@ -16,7 +16,6 @@ public class DrawBoard {
     private DrawNumberHandler drawNumberHandler;
     private Image[] images;
 
-    private Image bg;
     private Image gameBg;
     private Image pause;
     private Image btnBack;
@@ -79,12 +78,6 @@ public class DrawBoard {
         cellsize = sz;
 
         try {
-            bg = Image.createImage("/background.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
             gameBg = Image.createImage("/gamebg.png");
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,8 +131,8 @@ public class DrawBoard {
         ofsy_preview = ofsy_stack + cellsize * 1;
 
         //后来加的
-        bg_x = width / 2 - bg.getWidth() / 2;
-        bg_y = height / 2 - bg.getHeight() / 2;
+        bg_x = width / 2 - Util.bg.getWidth() / 2;
+        bg_y = height / 2 - Util.bg.getHeight() / 2;
         gameBg_x = width / 2 - gameBg.getWidth() / 2;
         gameBg_y = height / 2 - gameBg.getHeight() / 2;
 
@@ -209,7 +202,7 @@ public class DrawBoard {
     }
 
     public void DrawBg() {
-        g.drawImage(bg, bg_x, bg_y, Graphics.TOP | Graphics.LEFT);
+        g.drawImage(Util.bg, bg_x, bg_y, Graphics.TOP | Graphics.LEFT);
         g.drawImage(gameBg, gameBg_x, gameBg_y, Graphics.TOP | Graphics.LEFT);
     }
 
