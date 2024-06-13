@@ -3,7 +3,7 @@ import javax.microedition.lcdui.game.*;
 import java.util.Random;
 
 
-public class TetrisGameCanvas extends GameCanvas implements CommandListener, Runnable {
+public class TetrisGameCanvas extends GameCanvas implements Runnable {
     public Midlet midlet;
     private volatile boolean inWork;
     public int width;
@@ -60,9 +60,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     public static int mode2 = MODE_GAMEOVER;
     Thread t;
 
-    public Command cmdBack = new Command("", Command.EXIT, 1);
-    public Command cmdPause = new Command("", Command.OK, 2);
-    public Command cmdResume = new Command("", Command.OK, 2);
     public DrawBoard board;
 
     private Random _rnd = new Random();
@@ -72,11 +69,8 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     public Tetramino figure_tmp = new Tetramino();
 
     public TetrisGameCanvas() {
-        super(true);
+        super(false);
         setFullScreenMode(true);
-        addCommand(cmdBack);
-        addCommand(cmdPause);
-        setCommandListener(this);
         g = getGraphics();
         width = getWidth();
         height = getHeight();
@@ -124,6 +118,31 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
 
     public int rnd(int n) {
         return Math.abs(_rnd.nextInt()) % n;
+    }
+
+    protected void keyPressed(int keyCode) {
+        if (keyCode == -6 || keyCode == 8 || keyCode == 96 || keyCode == -8 || keyCode == -7) {
+            midlet.OpenMenu();
+            midlet.CloseGame();
+            return;
+        }
+
+        int action = getGameAction(keyCode);
+        if (action == FIRE) {
+            if(mode==MODE_PAUSE){
+                keyTrigger = 0xffffffff;
+                mode = mode2;
+                Refresh(true, false);
+            }
+            else {
+                time = System.currentTimeMillis();
+                mode2 = mode;
+                mode = MODE_PAUSE;
+                Refresh(true, true);
+                board.DrawPause();
+                flushGraphics();
+            }
+        }
     }
 
     public void run() {
@@ -286,9 +305,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
     public void Refresh(boolean showTetramino, boolean isPause) {
         board.Clear();
         board.DrawBg();
-        board.DrawBtnBack();
-        if (isPause) board.DrawBtnContinue();
-        else board.DrawBtnPause();
         board.DrawScore();
         board.DrawStack();
         board.DrawPreview(figure_next);
@@ -303,35 +319,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         level_delay = 900;
         FALLS = 0;
     }
-
-    //------------------------------------------------//    
-    //------------------- COMMANDS -------------------//
-    //------------------------------------------------//    
-
-    public void commandAction(Command c, Displayable d) {
-        if (c == cmdBack) {
-            midlet.OpenMenu();
-            midlet.CloseGame();
-        }
-        if (c == cmdPause) {
-            time = System.currentTimeMillis();
-            removeCommand(cmdPause);
-            addCommand(cmdResume);
-            mode2 = mode;
-            mode = MODE_PAUSE;
-            Refresh(true, true);
-            board.DrawPause();
-            flushGraphics();
-        }
-        if (c == cmdResume) {
-            keyTrigger = 0xffffffff;
-            removeCommand(cmdResume);
-            addCommand(cmdPause);
-            mode = mode2;
-            Refresh(true, false);
-        }
-    }
-
     private int keyTrigger = 0;
 
     private void readkeys() {
@@ -356,11 +343,6 @@ public class TetrisGameCanvas extends GameCanvas implements CommandListener, Run
         if ((key & UP_PRESSED) != 0) {
             OnUp();
             keyTrigger |= UP_PRESSED;
-        }
-        if ((key & FIRE_PRESSED) != 0) {
-            //OnFire();
-            OnDown();
-            keyTrigger |= FIRE_PRESSED;
         }
         if ((key & GAME_C_PRESSED) != 0) {
             OnFire();
