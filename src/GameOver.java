@@ -136,9 +136,9 @@ public class GameOver extends GameCanvas implements Runnable {
 
     protected void keyPressed(int keyCode) {
         int gameAction = getGameAction(keyCode);
-        if (gameAction == UP || gameAction == LEFT) {
+        if (gameAction == UP) {
             selectedOption = (selectedOption - 1 + 2) % 2;
-        } else if (gameAction == DOWN || gameAction == RIGHT) {
+        } else if (gameAction == DOWN) {
             selectedOption = (selectedOption + 1) % 2;
         } else if (gameAction == FIRE) {
             executeSelectedOption();
