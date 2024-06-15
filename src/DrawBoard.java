@@ -18,9 +18,6 @@ public class DrawBoard {
 
     private Image gameBg;
     private Image pause;
-    private Image btnBack;
-    private Image btnPause;
-    private Image btnContinue;
 
     public Stack stack;
 
@@ -63,7 +60,7 @@ public class DrawBoard {
             sz = 10;
         }
         if (height > (12 * 21)) {
-            sz = 32;
+            sz = 25;
         }
         Image temp = null;
         images = new Image[8];
@@ -71,7 +68,7 @@ public class DrawBoard {
         try {
             temp = Image.createImage("/blocks.png");
             for (int i = 0; i < 8; i++)
-                images[i] = Image.createImage(temp, i * 32, 0, sz, sz, Sprite.TRANS_NONE);
+                images[i] = Image.createImage(temp, i * 25, 0, sz, sz, Sprite.TRANS_NONE);
         } catch (java.io.IOException e) {
             s = e.getMessage();
         }
@@ -89,25 +86,7 @@ public class DrawBoard {
             e.printStackTrace();
         }
 
-        try {
-            btnBack = Image.createImage("/btn_back.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            btnPause = Image.createImage("/btn_pause.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            btnContinue = Image.createImage("/btn_continue.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        this.drawNumberHandler = new DrawNumberHandler("/number.png", 32, 48);
+        this.drawNumberHandler = new DrawNumberHandler("/number.png", 16, 24);
         this.Clear();
     }
 
@@ -124,8 +103,8 @@ public class DrawBoard {
         w_preview = cellsize * 6;
         w_r = w_preview;
 
-        ofsx_stack = (width - w_stack) / 2 - 72;
-        ofsy_stack = (height - h_stack) / 2 + 16;
+        ofsx_stack = (width - w_stack) / 2 - 47;
+        ofsy_stack = (height - h_stack) / 2 + 13;
 
         ofsx_preview = (width - w_stack - w_preview) / 2 + w_stack;
         ofsy_preview = ofsy_stack + cellsize * 1;
@@ -138,13 +117,13 @@ public class DrawBoard {
 
         int center_x = width / 2;
         int center_y = height / 2;
-        int offsetx = 185;
+        int offsetx = 132;
         score_x = center_x + offsetx;
-        score_y = center_y - 55;
+        score_y = center_y - 35;
         lines_x = center_x + offsetx;
-        lines_y = center_y + 110;
+        lines_y = center_y + 90;
         level_x = center_x + offsetx;
-        level_y = center_y + 280;
+        level_y = center_y + 220;
     }
 
     public void DrawAll() {
@@ -185,6 +164,13 @@ public class DrawBoard {
     }
 
     public void DrawPreview(Tetramino t) {
+        for (int j = 0; j < 4; j++) {
+            int jj = j * cellsize + 50;
+            for (int i = 0; i < 4; i++) {
+                int ii = i * cellsize;
+                g.drawImage(images[7], ii +ofsx_preview-5, jj, 0);
+            }
+        }
         int min_x = Math.min(t.x[0], Math.min(t.x[1], Math.min(t.x[2], t.x[3])));
         int max_x = Math.max(t.x[0], Math.max(t.x[1], Math.max(t.x[2], t.x[3])));
         int min_y = Math.min(t.y[0], Math.min(t.y[1], Math.min(t.y[2], t.y[3])));
@@ -193,8 +179,8 @@ public class DrawBoard {
         int wx = max_x - min_x;
         int wy = max_y - min_y;
 
-        int ox = ofsx_preview + cellsize * ((4 - wx) / 2 - min_x) + 10;
-        int oy = ofsy_preview + cellsize * ((4 - wy) / 2 - min_y);
+        int ox = ofsx_preview + cellsize * ((4 - wx) / 2 - min_x) -5;
+        int oy = ofsy_preview + cellsize * ((4 - wy) / 2 - min_y)+10;
         g.drawImage(images[t.colorIndex], cellsize * t.x[0] + ox, cellsize * t.y[0] + oy, 0);
         g.drawImage(images[t.colorIndex], cellsize * t.x[1] + ox, cellsize * t.y[1] + oy, 0);
         g.drawImage(images[t.colorIndex], cellsize * t.x[2] + ox, cellsize * t.y[2] + oy, 0);
@@ -204,6 +190,13 @@ public class DrawBoard {
     public void DrawBg() {
         g.drawImage(Util.bg, bg_x, bg_y, Graphics.TOP | Graphics.LEFT);
         g.drawImage(gameBg, gameBg_x, gameBg_y, Graphics.TOP | Graphics.LEFT);
+        for (int j = 0; j < stack.h; j++) {
+            int jj = j * cellsize + ofsy_stack;
+            for (int i = 0; i < stack.w; i++) {
+                int ii = i * cellsize;
+                g.drawImage(images[7], ii + ofsx_stack, jj, 0);
+            }
+        }
     }
 
     public void DrawScore() {
@@ -220,24 +213,6 @@ public class DrawBoard {
         int x = width / 2 - pause.getWidth() / 2;
         int y = height / 2 - pause.getHeight() / 2;
         g.drawImage(pause, x, y, Graphics.TOP | Graphics.LEFT);
-    }
-
-    public void DrawBtnBack() {
-        int x = 50;
-        int y = height - 50;
-        g.drawImage(btnBack, x, y, Graphics.TOP | Graphics.LEFT);
-    }
-
-    public void DrawBtnPause() {
-        int x = width - 130;
-        int y = height - 50;
-        g.drawImage(btnPause, x, y, Graphics.TOP | Graphics.LEFT);
-    }
-
-    public void DrawBtnContinue() {
-        int x = width - 130;
-        int y = height - 50;
-        g.drawImage(btnContinue, x, y, Graphics.TOP | Graphics.LEFT);
     }
 }
 
