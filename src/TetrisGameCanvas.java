@@ -3,7 +3,7 @@ import javax.microedition.lcdui.game.*;
 import java.util.Random;
 
 
-public class TetrisGameCanvas extends GameCanvas implements Runnable {
+public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGame {
     public Midlet midlet;
     private volatile boolean inWork;
     public int width;
@@ -68,12 +68,17 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable {
     public Tetramino figure_next = new Tetramino();
     public Tetramino figure_tmp = new Tetramino();
 
-    public TetrisGameCanvas() {
+    public boolean pause = false;
+    private PausePannel pp;
+
+    public TetrisGameCanvas(Midlet midlet) {
         super(false);
         setFullScreenMode(true);
         g = getGraphics();
         width = getWidth();
         height = getHeight();
+        this.midlet = midlet;
+        pp = new PausePannel(midlet, this, this.getWidth(), this.getHeight());
     }
 
 
@@ -121,28 +126,29 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable {
     }
 
     protected void keyPressed(int keyCode) {
+        int action = getGameAction(keyCode);
         if (keyCode == -6 || keyCode == 8 || keyCode == 96 || keyCode == -8 || keyCode == -7) {
-            midlet.OpenMenu();
-            midlet.CloseGame();
-            return;
+            time = System.currentTimeMillis();
+            mode2 = mode;
+            mode = MODE_PAUSE;
+            Refresh(true, true);
+            if (mode == MODE_PAUSE)pp.Draw(g);
+            flushGraphics();
         }
 
-        int action = getGameAction(keyCode);
-        if (action == FIRE) {
-            if(mode==MODE_PAUSE){
-                keyTrigger = 0xffffffff;
-                mode = mode2;
-                Refresh(true, false);
-            }
-            else {
-                time = System.currentTimeMillis();
-                mode2 = mode;
-                mode = MODE_PAUSE;
-                Refresh(true, true);
-                board.DrawPause();
-                flushGraphics();
-            }
+        if (mode == MODE_PAUSE) {
+            pp.keyPressed(action);
+            Refresh(true, true);
+            if (mode == MODE_PAUSE) pp.Draw(g);
+            flushGraphics();
         }
+    }
+
+    public void RestartGame() {
+        keyTrigger = 0xffffffff;
+        mode = mode2;
+        Refresh(true, false);
+        flushGraphics();
     }
 
     public void run() {
@@ -154,6 +160,10 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable {
         if (mode == MODE_PAUSE) board.DrawPause();
 
         while (inWork) {
+            if (pause) {
+
+                continue;
+            }
             if (mode == MODE_PAUSE) {
                 Sleep(100);
                 flushGraphics();
@@ -319,6 +329,7 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable {
         level_delay = 900;
         FALLS = 0;
     }
+
     private int keyTrigger = 0;
 
     private void readkeys() {

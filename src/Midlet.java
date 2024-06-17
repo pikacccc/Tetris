@@ -1,7 +1,7 @@
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 
-public class Midlet extends MIDlet {
+public class Midlet extends MIDlet implements IExit {
     public Display display;
     public TetrisGameCanvas canvas;
     public Menu gameMenu;
@@ -13,8 +13,7 @@ public class Midlet extends MIDlet {
         rs = new RecordStores("ES.TETRIS", 1);
         display = Display.getDisplay(this);
 
-        canvas = new TetrisGameCanvas();
-        canvas.midlet = this;
+        canvas = new TetrisGameCanvas(this);
         gameMenu = new Menu();
         gameMenu.midlet = this;
         gameOver = new GameOver();
@@ -69,5 +68,9 @@ public class Midlet extends MIDlet {
     public void exitMIDlet() {
         destroyApp(true);
         notifyDestroyed();
+    }
+
+    public void Exit() {
+        exitMIDlet();
     }
 }
