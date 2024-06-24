@@ -127,14 +127,16 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
 
     protected void keyPressed(int keyCode) {
         int action = getGameAction(keyCode);
-        if (keyCode == -6 || keyCode == 8 || keyCode == 96 || keyCode == -8 || keyCode == -7) {
-            if( mode != MODE_PAUSE){
-                time = System.currentTimeMillis();
-                mode2 = mode;
-                mode = MODE_PAUSE;
-                Refresh(true, true);
-                if (mode == MODE_PAUSE)pp.Draw(g);
-                flushGraphics();
+        if (keyCode == 8 || keyCode == 96 || (keyCode <= -6 && keyCode >= -20)) {
+            if (action != FIRE && action != UP && action != LEFT && action != RIGHT && action != DOWN) {
+                if (mode != MODE_PAUSE) {
+                    time = System.currentTimeMillis();
+                    mode2 = mode;
+                    mode = MODE_PAUSE;
+                    Refresh(true, true);
+                    if (mode == MODE_PAUSE) pp.Draw(g);
+                    flushGraphics();
+                }
             }
         }
 
