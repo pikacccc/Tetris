@@ -125,9 +125,22 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
         return Math.abs(_rnd.nextInt()) % n;
     }
 
+    protected void hideNotify() {
+        super.hideNotify();
+        if (mode != MODE_PAUSE) {
+            time = System.currentTimeMillis();
+            mode2 = mode;
+            mode = MODE_PAUSE;
+            Refresh(true, true);
+            if (mode == MODE_PAUSE) pp.Draw(g);
+            flushGraphics();
+        }
+        System.out.println("Out");
+    }
+
     protected void keyPressed(int keyCode) {
         int action = getGameAction(keyCode);
-        if (keyCode == 8 || keyCode == 96 || (keyCode <= -6 && keyCode >= -20)) {
+        if (keyCode == 8 || keyCode == 96 || keyCode == -6 || keyCode == 48 || keyCode == -31 || keyCode == -8 || keyCode == -9 || keyCode == -5)  {
             if (action != FIRE && action != UP && action != LEFT && action != RIGHT && action != DOWN) {
                 if (mode != MODE_PAUSE) {
                     time = System.currentTimeMillis();
@@ -323,6 +336,7 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
         board.DrawStack();
         board.DrawPreview(figure_next);
         board.DrawTetramino(figure, showTetramino);
+        this.drawString(g, "0/返回：返回菜单", this.getWidth() - 140, this.getHeight() - 16, 4 | 16);
         flushGraphics();
     }
 
@@ -437,5 +451,20 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
         } else {
             figure.CopyFrom(figure_tmp);
         }
+    }
+
+    private void drawString(Graphics g, String str, int x, int y, int anchor) {
+        g.setColor(0, 0, 0);
+        g.drawString(str, x - 2, y, anchor);
+        g.drawString(str, x + 2, y, anchor);
+        g.drawString(str, x, y - 2, anchor);
+        g.drawString(str, x, y + 2, anchor);
+        g.setColor(0, 0, 129);
+        g.drawString(str, x - 1, y, anchor);
+        g.drawString(str, x + 1, y, anchor);
+        g.drawString(str, x, y - 1, anchor);
+        g.drawString(str, x, y + 1, anchor);
+        g.setColor(199, 218, 243);
+        g.drawString(str, x, y, anchor);
     }
 }
