@@ -131,33 +131,24 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
             time = System.currentTimeMillis();
             mode2 = mode;
             mode = MODE_PAUSE;
-            Refresh(true, true);
-            if (mode == MODE_PAUSE) pp.Draw(g);
-            flushGraphics();
         }
         System.out.println("Out");
     }
 
     protected void keyPressed(int keyCode) {
         int action = getGameAction(keyCode);
-        if (keyCode == 8 || keyCode == 96 || keyCode == -6 || keyCode == 48 || keyCode == -31 || keyCode == -8 || keyCode == -9 || keyCode == -5)  {
+        if (keyCode == 8 || keyCode == 96 || keyCode == -6 || keyCode == 48 || keyCode == -31 || keyCode == -8 || keyCode == -9 || keyCode == -5) {
             if (action != FIRE && action != UP && action != LEFT && action != RIGHT && action != DOWN) {
                 if (mode != MODE_PAUSE) {
                     time = System.currentTimeMillis();
                     mode2 = mode;
                     mode = MODE_PAUSE;
-                    Refresh(true, true);
-                    if (mode == MODE_PAUSE) pp.Draw(g);
-                    flushGraphics();
                 }
             }
         }
 
         if (mode == MODE_PAUSE) {
             pp.keyPressed(action);
-            Refresh(true, true);
-            if (mode == MODE_PAUSE) pp.Draw(g);
-            flushGraphics();
         }
     }
 
@@ -177,13 +168,8 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
         if (mode == MODE_PAUSE) board.DrawPause();
 
         while (inWork) {
-            if (pause) {
-
-                continue;
-            }
             if (mode == MODE_PAUSE) {
-                Sleep(100);
-                flushGraphics();
+                Refresh(true, true);
                 continue;
             }
             if (mode == MODE_NEWFIGURE) {
@@ -336,6 +322,7 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
         board.DrawStack();
         board.DrawPreview(figure_next);
         board.DrawTetramino(figure, showTetramino);
+        if (isPause) pp.Draw(g);
         this.drawString(g, "0/返回：返回菜单", this.getWidth() - 140, this.getHeight() - 16, 4 | 16);
         flushGraphics();
     }
