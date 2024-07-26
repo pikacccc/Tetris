@@ -131,6 +131,9 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
             time = System.currentTimeMillis();
             mode2 = mode;
             mode = MODE_PAUSE;
+            Refresh(true, true);
+            if (mode == MODE_PAUSE) pp.Draw(g);
+            flushGraphics();
         }
         System.out.println("Out");
     }
@@ -143,12 +146,18 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
                     time = System.currentTimeMillis();
                     mode2 = mode;
                     mode = MODE_PAUSE;
+                    Refresh(true, true);
+                    if (mode == MODE_PAUSE) pp.Draw(g);
+                    flushGraphics();
                 }
             }
         }
 
         if (mode == MODE_PAUSE) {
             pp.keyPressed(action);
+            Refresh(true, true);
+            if (mode == MODE_PAUSE) pp.Draw(g);
+            flushGraphics();
         }
     }
 
@@ -168,8 +177,13 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
         if (mode == MODE_PAUSE) board.DrawPause();
 
         while (inWork) {
+            if (pause) {
+
+                continue;
+            }
             if (mode == MODE_PAUSE) {
-                Refresh(true, true);
+                Sleep(100);
+                flushGraphics();
                 continue;
             }
             if (mode == MODE_NEWFIGURE) {
@@ -322,8 +336,7 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
         board.DrawStack();
         board.DrawPreview(figure_next);
         board.DrawTetramino(figure, showTetramino);
-        if (isPause) pp.Draw(g);
-        this.drawString(g, "0/ËøîÂõûÔºöËøîÂõûËèúÂçï", this.getWidth() - 140, this.getHeight() - 16, 4 | 16);
+        this.drawString(g, "0/∑µªÿ£∫∑µªÿ≤Àµ•", this.getWidth() - 140, this.getHeight() - 16, 4 | 16);
         flushGraphics();
     }
 
