@@ -18,7 +18,7 @@ public class DrawBoard {
 
     private Image gameBg;
     private Image pause;
-
+    private Image backTip;
     public Stack stack;
 
     public int w_stack;
@@ -42,6 +42,9 @@ public class DrawBoard {
     public int lines_y;
     public int score_x;
     public int score_y;
+
+    private int BackTip_x;
+    private int BackTip_y;
 
     public DrawBoard(TetrisGameCanvas canvas) {
         this.canvas = canvas;
@@ -86,6 +89,7 @@ public class DrawBoard {
             e.printStackTrace();
         }
 
+        backTip = Util.LoadImg("/BackTip.png");
         this.drawNumberHandler = new DrawNumberHandler("/number.png", 16, 24);
         this.Clear();
     }
@@ -124,12 +128,20 @@ public class DrawBoard {
         lines_y = center_y + 90;
         level_x = center_x + offsetx;
         level_y = center_y + 220;
+
+        BackTip_x = width - 140;
+        BackTip_y = height - 25;
     }
 
     public void DrawAll() {
         DrawBg();
         DrawStack();
         DrawScore();
+        DrawBackTip();
+    }
+
+    public void DrawBackTip(){
+        g.drawImage(backTip, BackTip_x, BackTip_y, 0);
     }
 
     public void DrawTetramino(Tetramino t, boolean vis) {

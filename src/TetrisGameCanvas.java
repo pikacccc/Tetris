@@ -336,7 +336,7 @@ public class TetrisGameCanvas extends GameCanvas implements Runnable, IRestartGa
         board.DrawStack();
         board.DrawPreview(figure_next);
         board.DrawTetramino(figure, showTetramino);
-        this.drawString(g, "0/·µ»Ø£º·µ»Ø²Ëµ¥", this.getWidth() - 140, this.getHeight() - 16, 4 | 16);
+        board.DrawBackTip();
         flushGraphics();
     }
 
